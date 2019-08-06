@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/david-inoa-fed68b/sick-fits/dev
-# timestamp: Fri Dec 21 2018 10:07:38 GMT-0400 (Atlantic Standard Time)
+# timestamp: Mon Aug 05 2019 18:22:51 GMT-0700 (Pacific Daylight Time)
 
 type AggregateItem {
   count: Int!
@@ -23,7 +23,7 @@ type Item implements Node {
   image: String
   largeImage: String
   price: Int!
-  createAt: DateTime!
+  createdAt: DateTime!
   updatedAt: DateTime!
 }
 
@@ -38,12 +38,12 @@ type ItemConnection {
 }
 
 input ItemCreateInput {
+  id: ID
   title: String!
   description: String!
   image: String
   largeImage: String
   price: Int!
-  createAt: DateTime!
 }
 
 """An edge in a connection."""
@@ -68,12 +68,10 @@ enum ItemOrderByInput {
   largeImage_DESC
   price_ASC
   price_DESC
-  createAt_ASC
-  createAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type ItemPreviousValues {
@@ -83,7 +81,7 @@ type ItemPreviousValues {
   image: String
   largeImage: String
   price: Int!
-  createAt: DateTime!
+  createdAt: DateTime!
   updatedAt: DateTime!
 }
 
@@ -132,7 +130,6 @@ input ItemUpdateInput {
   image: String
   largeImage: String
   price: Int
-  createAt: DateTime
 }
 
 input ItemUpdateManyMutationInput {
@@ -141,7 +138,6 @@ input ItemUpdateManyMutationInput {
   image: String
   largeImage: String
   price: Int
-  createAt: DateTime
 }
 
 input ItemWhereInput {
@@ -375,28 +371,28 @@ input ItemWhereInput {
 
   """All values greater than or equal the given value."""
   price_gte: Int
-  createAt: DateTime
+  createdAt: DateTime
 
   """All values that are not equal to given value."""
-  createAt_not: DateTime
+  createdAt_not: DateTime
 
   """All values that are contained in given list."""
-  createAt_in: [DateTime!]
+  createdAt_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  createAt_not_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
 
   """All values less than the given value."""
-  createAt_lt: DateTime
+  createdAt_lt: DateTime
 
   """All values less than or equal the given value."""
-  createAt_lte: DateTime
+  createdAt_lte: DateTime
 
   """All values greater than the given value."""
-  createAt_gt: DateTime
+  createdAt_gt: DateTime
 
   """All values greater than or equal the given value."""
-  createAt_gte: DateTime
+  createdAt_gte: DateTime
   updatedAt: DateTime
 
   """All values that are not equal to given value."""
@@ -497,6 +493,8 @@ type User implements Node {
   id: ID!
   name: String!
   email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -510,6 +508,7 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  id: ID
   name: String!
   email: String!
 }
@@ -530,16 +529,18 @@ enum UserOrderByInput {
   name_DESC
   email_ASC
   email_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   name: String!
   email: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -720,6 +721,50 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 input UserWhereUniqueInput {
