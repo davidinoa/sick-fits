@@ -36,7 +36,7 @@ const CreateItem = () => {
     price: 0,
   });
 
-  const { title, description, image, largeImage, price } = state;
+  const { title, description, image, price } = state;
 
   const handleChange = e => {
     const { name, type, value: targetValue } = e.target;
@@ -53,10 +53,40 @@ const CreateItem = () => {
     });
   };
 
+  const uploadFile = async e => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    data.append('upload_preset', 'sickfits');
+
+    const url = 'https://api.cloudinary.com/v1_1/dinoa/image/upload';
+    const options = { method: 'POST', body: data };
+    const res = await fetch(url, options);
+    const file = await res.json();
+
+    setState({
+      ...state,
+      image: file.secure_url,
+      largeImage: file.eager[0].secure_url,
+    });
+  };
+
   return (
     <Form onSubmit={handleSubmit}>
       <Error error={error} />
       <fieldset disabled={loading} aria-busy={loading}>
+        <label htmlFor="file">
+          Image
+          <input
+            id="file"
+            type="file"
+            name="file"
+            placeholder="Upload an image"
+            onChange={uploadFile}
+            required
+          />
+          {image && <img width="200" src={image} alt={title} />}
+        </label>
         <label htmlFor="title">
           Title
           <input
@@ -86,7 +116,7 @@ const CreateItem = () => {
           <textarea
             id="description"
             name="description"
-            placeholder="Enter A Description"
+            placeholder="Enter a description"
             value={description}
             onChange={handleChange}
             required
