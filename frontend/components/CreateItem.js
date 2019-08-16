@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
 import Error from './ErrorMessage';
@@ -12,7 +12,7 @@ const CREATE_ITEM = gql`
     $description: String!
     $image: String
     $largeImage: String
-    $price: Price!
+    $price: Int!
   ) {
     createItem(
       title: $title
@@ -27,7 +27,6 @@ const CREATE_ITEM = gql`
 `;
 
 const CreateItem = () => {
-  const [createItem, { loading, error }] = useMutation(CREATE_ITEM);
   const [state, setState] = useState({
     title: '',
     description: '',
@@ -44,9 +43,9 @@ const CreateItem = () => {
     setState({ ...state, [name]: value });
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e, createItem) => {
     e.preventDefault();
-    const response = await createItem(state);
+    const response = await createItem();
     Router.push({
       pathname: '/item',
       query: { id: response.data.createItem.id },
@@ -72,59 +71,63 @@ const CreateItem = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Error error={error} />
-      <fieldset disabled={loading} aria-busy={loading}>
-        <label htmlFor="file">
-          Image
-          <input
-            id="file"
-            type="file"
-            name="file"
-            placeholder="Upload an image"
-            onChange={uploadFile}
-            required
-          />
-          {image && <img width="200" src={image} alt={title} />}
-        </label>
-        <label htmlFor="title">
-          Title
-          <input
-            id="title"
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={title}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label htmlFor="price">
-          Price
-          <input
-            id="price"
-            type="text"
-            name="price"
-            placeholder="Price"
-            value={price}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label htmlFor="description">
-          Description
-          <textarea
-            id="description"
-            name="description"
-            placeholder="Enter a description"
-            value={description}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <button type="submit">Submit</button>
-      </fieldset>
-    </Form>
+    <Mutation mutation={CREATE_ITEM} variables={state}>
+      {(createItem, { loading, error }) => (
+        <Form onSubmit={e => handleSubmit(e, createItem)}>
+          <Error error={error} />
+          <fieldset disabled={loading} aria-busy={loading}>
+            <label htmlFor="file">
+              Image
+              <input
+                id="file"
+                type="file"
+                name="file"
+                placeholder="Upload an image"
+                onChange={uploadFile}
+                required
+              />
+              {image && <img width="200" src={image} alt={title} />}
+            </label>
+            <label htmlFor="title">
+              Title
+              <input
+                id="title"
+                type="text"
+                name="title"
+                placeholder="Title"
+                value={title}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label htmlFor="price">
+              Price
+              <input
+                id="price"
+                type="text"
+                name="price"
+                placeholder="Price"
+                value={formatMoney(price)}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label htmlFor="description">
+              Description
+              <textarea
+                id="description"
+                name="description"
+                placeholder="Enter a description"
+                value={description}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <button type="submit">Submit</button>
+          </fieldset>
+        </Form>
+      )}
+    </Mutation>
   );
 };
 

@@ -25,7 +25,7 @@ const Item = props => {
           <a>Edit ✏️</a>
         </Link>
         <button>Add To Cart</button>
-        <button>Delete</button>
+        <button>Delete Item</button>
       </div>
     </ItemStyles>
   );
