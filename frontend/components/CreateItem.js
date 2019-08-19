@@ -84,7 +84,6 @@ const CreateItem = () => {
                 name="file"
                 placeholder="Upload an image"
                 onChange={uploadFile}
-                required
               />
               {image && <img width="200" src={image} alt={title} />}
             </label>
@@ -107,7 +106,7 @@ const CreateItem = () => {
                 type="text"
                 name="price"
                 placeholder="Price"
-                value={formatMoney(price)}
+                value={price}
                 onChange={handleChange}
                 required
               />
